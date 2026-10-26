@@ -28,7 +28,8 @@ if (isProd) app.set('trust proxy', 1);
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    // Trailing slashes are stripped so CLIENT_URL=https://site.vercel.app/ still matches the browser's Origin.
+    origin: (process.env.CLIENT_URL || 'http://localhost:5173').trim().replace(/\/+$/, ''),
     credentials: true,
   })
 );
